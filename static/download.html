@@ -79,13 +79,21 @@ function pollFile () {
 			downloads.style.display = 'none'
 		}
 		var urls = data.urls && data.urls.length > 0 ? data.urls : null
-		if (data.file) {
+		if (data.files) {
 			downloads.style.display = 'block'
-			downloadlink.textContent = data.file.name
-			downloadlink.href = '/' + encodeURIComponent(data.file.name) + "?key=" + key
-		} else {
-			downloads.style.display = 'none'
-		}
+			downloads.innerHTML = '';
+			data.files.forEach(function (file) {
+			var downloadlink = document.createElement("a"); // Crear un nuevo elemento de enlace para cada archivo
+			downloadlink.textContent = file.name;
+			downloadlink.href = './download/' + key + '/' + file.name
+			downloadlink.className = "downloadlink";
+			var div = document.createElement('div');
+			div.appendChild(downloadlink);
+			downloads.appendChild(div);
+      	})
+    } else {
+      downloads.style.display = 'none'
+    }
 		if (urls) {
 			urlsnode.innerHTML = '<br/><div style="font-size: 1.3em;"><em>Urls</em></div>'
 			urls.forEach(function (url) {
